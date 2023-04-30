@@ -9,8 +9,8 @@
   router
   >
   <el-menu-item class="menu-list-item" index="/">首页</el-menu-item>
-  <el-button class="login-part" type="text" v-if="username">登陆</el-button>
-  <el-button class="login-part" type="text" @click="openLoginBox" v-else>登陆</el-button>
+  <el-button class="login-part" type="text" @click="openLoginBox" v-if="!userInfo.username">登陆</el-button>
+  <el-button class="login-part" type="text" v-else>{{ userInfo.username }}</el-button>
 
   <!-- 登陆框 -->
   <el-dialog
@@ -67,7 +67,7 @@ export default {
     }
     return {
       searchKey: '',
-      username: '',
+      userInfo: {},
       dialogVisible: false,
       ruleForm: {
         pass: '',
@@ -85,8 +85,9 @@ export default {
   },
 
   created () {
-    this.username = User.getUsername()
+    this.userInfo = User.getUserInfo()
   },
+
   components: {},
 
   computed: {},
@@ -120,16 +121,24 @@ export default {
         username: this.ruleForm.username,
         password: md5(this.ruleForm.pass)
       })
-
-      const accessToken = result.data.token
-      if (Lodash.isNull(accessToken)) {
-        localStorage.setItem('Authorization', accessToken)
-      } else {
-
+      if (!Lodash.isNull(result.msg)) {
+        alert(result.msg)
+        return false
       }
+      const accessToken = result.token
+      if (!Lodash.isNull(accessToken)) {
+        localStorage.setItem('Authorization', accessToken)
+      }
+
+      this.dialogVisible = false
+      this.userInfo = User.getUserInfo()
     },
 
     async register () {
+      await UserEngine.userRegister({
+        username: this.ruleForm.username,
+        password: md5(this.ruleForm.pass)
+      })
     }
   }
 }

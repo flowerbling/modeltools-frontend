@@ -10,7 +10,7 @@ import router from './router'
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
-const BaseUrl = 'http://0.0.0.0:8000'
+const BaseUrl = 'http://127.0.0.1:8000'
 axios.defaults.baseURL = BaseUrl
 axios.defaults.headers = {
   Authorization: localStorage.getItem('Authorization')
