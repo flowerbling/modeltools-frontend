@@ -3,10 +3,12 @@ import 'element-ui/lib/theme-chalk/index.css'
 import App from './App'
 import ElementUI from 'element-ui'
 import Vue from 'vue'
+import VueAudio from 'vue-audio-better'
 import VueAxios from 'vue-axios'
 import axios from 'axios'
 import router from './router'
 
+Vue.use(VueAudio)
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 

@@ -76,15 +76,21 @@
       :visible.sync="resultVisible"
       width="30%"
       center>
+        <div v-show="!isEmpty(data.audio)">
+          <a :href="data.audio" target="_blank">音频地址</a>
+          <mini-audio
+          style="width: 90%;"
+          :audio-source="data.audio"
+        ></mini-audio></div>
         <el-image
         style="width: 100px; height: 100px"
-        v-show="!isEmpty(data.url)"
-        :src="data.url"
+        v-show="!isEmpty(data.image)"
+        :src="data.image"
         fit="cover"
         :preview-src-list="previewSrcList">
       </el-image>
-      <div v-show="!isEmpty(data.label)">文本： {{data.label}}</div>
-      <div v-show="!isEmpty(data.score)">得分： {{data.score}}</div>
+      <div v-show="!isEmpty(data.labels)">文本： {{data.labels}}</div>
+      <div v-show="!isEmpty(data.scores)">得分： {{data.scores}}</div>
     </el-dialog>
     <el-dialog
       title="新建任务"
