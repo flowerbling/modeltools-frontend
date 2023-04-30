@@ -12,9 +12,7 @@ Vue.config.productionTip = false
 
 const BaseUrl = 'http://127.0.0.1:8000'
 axios.defaults.baseURL = BaseUrl
-axios.defaults.headers = {
-  Authorization: localStorage.getItem('Authorization')
-}
+axios.defaults.headers.Authorization = localStorage.getItem('Authorization')
 
 Vue.use(VueAxios, axios)
 

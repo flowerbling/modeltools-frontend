@@ -24,4 +24,10 @@ export default class User {
   }).catch((error) => {
     return error.response.data
   })
+
+  static uploadFile = (formData) => Vue.axios.post('/users/upload/', formData, { headers: {'Content-Type': 'multipart/form-data'} }).then((response) => {
+    return response.data
+  }).catch((error) => {
+    return error.response.data
+  })
 }
