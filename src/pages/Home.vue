@@ -59,6 +59,12 @@
           <template slot="header">
             <el-button
               type="primary"
+              @click="fetchJobs"
+            >
+              刷新
+            </el-button>
+            <el-button
+              type="primary"
               @click="onAddJob"
             >
               新建任务
@@ -244,8 +250,8 @@ export default {
 
     showResult (row) {
       this.data = row.data
-      if (this.data.url) {
-        this.previewSrcList = [this.data.url]
+      if (this.data.image) {
+        this.previewSrcList = [this.data.image]
       }
       this.resultVisible = true
     },
