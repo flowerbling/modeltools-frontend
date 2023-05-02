@@ -216,7 +216,7 @@ export default {
     },
 
     async fetchJobs () {
-      const result = await UserEngine.fetchUserJobs({p: this.p})
+      const result = await UserEngine.fetchUserJobs({p: this.p, ordering: '-id'})
       if (result) {
         this.jobs = result.results.map((job, index) => {
           const data = job.result ? job.result : {}
