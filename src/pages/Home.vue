@@ -35,7 +35,6 @@
             fit="cover"
           >
           </el-image></div>
-
         </template>
         </el-table-column>
         <el-table-column
@@ -73,6 +72,10 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        background
+        @current-change="fetchJobs"
+        :current-page.sync="p"
+        :page-size="10"
         class="pagination-container"
         layout="prev, pager, next"
         :total="total">
@@ -185,6 +188,7 @@ export default {
       total: 0,
       resultVisible: false,
       addJobVisible: false,
+      p: 1,
       data: {},
       previewSrcList: [],
       typeList: [],
@@ -212,10 +216,8 @@ export default {
     },
 
     async fetchJobs () {
-      const result = await UserEngine.fetchUserJobs()
+      const result = await UserEngine.fetchUserJobs({p: this.p})
       if (result) {
-        this.jobs = result.results
-
         this.jobs = result.results.map((job, index) => {
           const data = job.result ? job.result : {}
           return { ...job, created_at: Moment.getBeautyDate(job.created_at), ...this.getTag(job.status), data: data, type: this.getTypeName(job.type) }
@@ -283,7 +285,7 @@ export default {
     },
 
     beforeAvatarUpload (file) {
-      const imageRegex = /^image\/(png|jpe?g)$/i
+      const imageRegex = /^image\/(png|webp|jpe?g)$/i
       const isImage = imageRegex.test(file.type)
       const isLt2M = file.size / 1024 / 1024 < 2
 
@@ -312,6 +314,21 @@ export default {
     },
 
     async submitForm () {
+      if (this.data.type === 'tts' && Lodash.isNull(this.data.voice)) {
+        this.$message.error('请选择发音人')
+        return false
+      }
+
+      if (this.imageInput.includes(this.data.type) && Lodash.isNull(this.data.file_url)) {
+        this.$message.error('请上传图片')
+        return false
+      }
+
+      if (this.textInput.includes(this.data.type) && Lodash.isNull(this.data.text)) {
+        this.$message.error('请输入文本')
+        return false
+      }
+
       await UserEngine.createJob({
         user_id: this.userInfo.uid,
         type: this.data.type,
